@@ -10,21 +10,22 @@ interface KPI {
   chartType: "line" | "bar" | "doughnut";
 }
 
-console.log(Array(10).map(() => Math.floor(Math.random() * 100)));
 const chartData = ref<ChartData<"line">>({
   labels: [...Array(40).keys()],
   datasets: [
     {
       label: "My First Dataset",
-      data: Array.from({ length: 40 }, () => Math.floor(Math.random() * 40)),
+      data: Array.from({ length: 40 }, () => Math.floor(Math.random() * 10)),
       borderColor: "rgb(75, 192, 192)",
       fill: false,
+      tension: 0.3,
     },
     {
       label: "My First Dataset",
-      data: Array.from({ length: 40 }, () => Math.floor(Math.random() * 40)),
+      data: Array.from({ length: 40 }, () => Math.floor(Math.random() * 10)),
       borderColor: "green",
       fill: true,
+      tension: 0.3,
     },
   ],
 });
@@ -61,7 +62,7 @@ const chartOptions2 = ref<ChartOptions<"line">>({
           type: "line",
           borderWidth: 1,
           scaleID: "y",
-          value: 10,
+          value: 5,
           borderDash: [4, 2],
           borderColor: "red",
         },
