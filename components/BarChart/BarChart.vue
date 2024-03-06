@@ -1,25 +1,19 @@
 <script setup lang="ts">
 import type { ChartData, ChartOptions } from "chart.js";
 import {
-  CategoryScale,
   Chart as ChartJS,
   Legend,
-  LineElement,
   LinearScale,
-  PointElement,
-  TimeScale,
   Title,
   Tooltip,
-  Filler,
+  BarElement,
 } from "chart.js";
-import chartjsPluginAnnotation from "chartjs-plugin-annotation";
-import chartjsPluginZoom from "chartjs-plugin-zoom";
 import { ref, watch } from "vue";
-import { Line } from "vue-chartjs";
+import { Bar } from "vue-chartjs";
 
 export interface Props {
-  chartData?: ChartData<"line"> | any;
-  chartOptions?: ChartOptions<"line"> | any;
+  chartData?: ChartData<"bar"> | any;
+  chartOptions?: ChartOptions<"bar"> | any;
   chartId?: string;
   datasetIdKey?: string;
   plugins?: Array<any>;
@@ -29,19 +23,7 @@ export interface Props {
   height?: number;
 }
 
-ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
-  TimeScale,
-  CategoryScale,
-  chartjsPluginAnnotation,
-  chartjsPluginZoom,
-  Filler
-);
+ChartJS.register(Title, Tooltip, Legend, BarElement, LinearScale);
 // chartjsPluginZoom
 
 const props = withDefaults(defineProps<Props>(), {
@@ -70,7 +52,7 @@ watch(
 
 <template>
   <div style="max-height: 200px">
-    <Line
+    <Bar
       :options="chartOptions"
       :data="chartData"
       :chart-id="chartId"
@@ -78,7 +60,6 @@ watch(
       :plugins="plugins"
       :css-classes="cssClasses"
       :styles="styles"
-      v-bind="$attrs"
       ref="lineChart"
     />
   </div>

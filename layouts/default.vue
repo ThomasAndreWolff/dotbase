@@ -14,14 +14,20 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar>
+    <v-app-bar scroll-behavior="elevate">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-app-bar-title>dotbase</v-app-bar-title>
+      <v-app-bar-title><b>dotbase</b></v-app-bar-title>
 
       <v-spacer></v-spacer>
 
-      <v-btn icon="mdi-dots-vertical"> </v-btn>
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+        </template>
+
+        <v-list :items="dropDown"></v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-main>
@@ -52,10 +58,21 @@ const links = [
     to: "/about",
   },
 ];
-</script>
 
-<script>
-export default {
-  data: () => ({ drawer: null }),
-};
+const dropDown = [
+  {
+    title: "Edit",
+    value: 1,
+    props: {
+      prependIcon: "mdi-view-dashboard-edit",
+    },
+  },
+  {
+    title: "Logout",
+    value: 1,
+    props: {
+      prependIcon: "mdi-logout",
+    },
+  },
+];
 </script>
