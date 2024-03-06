@@ -12,18 +12,32 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "@nuxt/ui": "^2.14.1",
+    "@pinia/nuxt": "^0.5.1",
+    "buffer": "^6.0.3",
+    "chart.js": "^4.4.2",
+    "chartjs-plugin-annotation": "^3.0.1",
+    "chartjs-plugin-zoom": "^2.0.1",
     "nuxt": "^3.10.3",
+    "pinia": "^2.1.7",
+    "plotly.js": "^2.29.1",
+    "plotly.js-dist-min": "^2.29.1",
+    "sass": "^1.71.1",
     "vue": "^3.4.19",
+    "vue-chartjs": "^5.3.0",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
+    "@ahryman40k/ts-fhir-types": "4.0.39",
     "@nuxt/eslint-config": "^0.2.0",
+    "@types/plotly.js": "^2.29.2",
     "eslint": "^8.57.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3",
+    "vite-plugin-vuetify": "^2.0.2",
     "vue-tsc": "^2.0.4",
-    "@ahryman40k/ts-fhir-types": "4.0.39"
+    "vuetify": "^3.5.8"
   }
 }
