@@ -15,6 +15,7 @@ export default defineNuxtConfig({
       });
     },
     "@pinia/nuxt",
+    "@nuxtjs/tailwindcss",
   ],
   ssr: false,
   vite: {

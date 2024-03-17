@@ -4,9 +4,15 @@ import type { KPI } from "~/stores/userStore";
 interface Props {
   kpis: KPI[];
   modelValue?: KPI;
+  edit?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {});
+const emit = defineEmits(["update:modelValue", "remove"]);
+
+const remove = (kpi: KPI) => {
+  emit("remove", kpi);
+};
 </script>
 
 <template>
@@ -17,7 +23,9 @@ const props = withDefaults(defineProps<Props>(), {});
         :title="kpi.title"
         :color="kpi.color"
         :chartType="kpi.chartType"
-        @click="() => $emit('update:modelValue', kpi)"
+        @click="() => (!edit ? $emit('update:modelValue', kpi) : null)"
+        @remove="remove(kpi)"
+        :edit="edit"
       />
     </v-col>
   </v-row>

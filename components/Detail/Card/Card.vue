@@ -13,12 +13,30 @@ const chart = ref(useMockStore().getKPIDetails(props.kpi.id));
     <v-container>
       <v-row>
         <v-col>
-          <h1>{{ title }}</h1>
+          <p class="text-4xl font-semibold">{{ title }}</p>
         </v-col>
       </v-row>
       <v-row v-if="kpi.chartType == 'line' && chart">
         <v-col>
           <chart-line
+            :chart-data="chart?.data"
+            :chart-options="chart?.options"
+            style="position: relative; height: 500px; max-height: 500px"
+          />
+        </v-col>
+      </v-row>
+      <v-row v-if="kpi.chartType == 'bar' && chart">
+        <v-col>
+          <chart-bar
+            :chart-data="chart?.data"
+            :chart-options="chart?.options"
+            style="position: relative; height: 500px; max-height: 500px"
+          />
+        </v-col>
+      </v-row>
+      <v-row v-if="kpi.chartType == 'doughnut' && chart">
+        <v-col>
+          <chart-doughnut
             :chart-data="chart?.data"
             :chart-options="chart?.options"
             style="position: relative; height: 500px; max-height: 500px"

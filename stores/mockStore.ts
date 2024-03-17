@@ -1,5 +1,6 @@
 import type { ChartData, ChartOptions } from "chart.js";
 import { defineStore } from "pinia";
+import type { KPI } from "~/stores/userStore";
 
 export const useMockStore = defineStore("mock", () => {
   const getTotalUsers = () => {
@@ -41,7 +42,7 @@ export const useMockStore = defineStore("mock", () => {
       labels: [...Array(40).keys()],
       datasets: [
         {
-          label: "My First Dataset",
+          label: "Random Example Data",
           data: Array.from({ length: 40 }, () =>
             Math.floor(Math.random() * 10)
           ),
@@ -66,9 +67,7 @@ export const useMockStore = defineStore("mock", () => {
           propagate: true,
         },
         annotation: {},
-        legend: {
-          display: false,
-        },
+
         zoom: {
           zoom: {
             wheel: {
@@ -88,15 +87,20 @@ export const useMockStore = defineStore("mock", () => {
 
   const getTotalUserTrend = () => {
     return {
-      value: 100,
+      percentage: "69%",
+      value: "26K",
+      trend: "up",
     };
   };
 
   const getKPI = (kpiId: string) => {
     switch (kpiId) {
       case "1":
-        return getTotalUsers();
       case "2":
+      case "3":
+      case "4":
+        return getTotalUsers();
+      default:
         return;
     }
   };
@@ -104,8 +108,11 @@ export const useMockStore = defineStore("mock", () => {
   const getKPITrend = (kpiId: string) => {
     switch (kpiId) {
       case "1":
-        return getTotalUserTrend();
       case "2":
+      case "3":
+      case "4":
+        return getTotalUserTrend();
+      default:
         return;
     }
   };
@@ -113,11 +120,43 @@ export const useMockStore = defineStore("mock", () => {
   const getKPIDetails = (kpiId: string) => {
     switch (kpiId) {
       case "1":
-        return getTotalUsersDetail();
       case "2":
+      case "3":
+      case "4":
+        return getTotalUsersDetail();
+      default:
         return;
     }
   };
 
-  return { getKPI, getKPITrend, getKPIDetails };
+  const getKPIs = (): KPI[] => {
+    return [
+      {
+        id: "1",
+        title: "Total Users",
+        color: "indigo-darken-4",
+        chartType: "line",
+      },
+      {
+        id: "2",
+        title: "Total Revenue",
+        color: "blue-darken-1",
+        chartType: "line",
+      },
+      {
+        id: "3",
+        title: "Total Users",
+        color: "orange-darken-1",
+        chartType: "bar",
+      },
+      {
+        id: "4",
+        title: "Total Users",
+        color: "red-darken-1",
+        chartType: "doughnut",
+      },
+    ] as KPI[];
+  };
+
+  return { getKPI, getKPITrend, getKPIDetails, getKPIs };
 });
