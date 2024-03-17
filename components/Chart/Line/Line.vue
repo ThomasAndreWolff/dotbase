@@ -16,6 +16,7 @@ import chartjsPluginAnnotation from "chartjs-plugin-annotation";
 import chartjsPluginZoom from "chartjs-plugin-zoom";
 import { ref, watch } from "vue";
 import { Line } from "vue-chartjs";
+import "chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm";
 
 export interface Props {
   chartData?: ChartData<"line"> | any;
@@ -66,6 +67,14 @@ watch(
   },
   { deep: true }
 );
+
+const resetZoom = () => {
+  if (lineChart.value.chart) lineChart.value.chart.resetZoom();
+};
+
+defineExpose({
+  resetZoom,
+});
 </script>
 
 <template>

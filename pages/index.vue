@@ -46,5 +46,10 @@ const { kpis: userKpis } = storeToRefs(useUserStore());
         <detail-card :title="selectedKPI.title" :kpi="selectedKPI" />
       </v-col>
     </v-row>
+    <v-row>
+      <v-col>
+        <data-table title="Data Table " />
+      </v-col>
+    </v-row>
   </v-container>
 </template>

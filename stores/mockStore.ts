@@ -1,17 +1,37 @@
 import type { ChartData, ChartOptions } from "chart.js";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
 import { defineStore } from "pinia";
 import type { KPI } from "~/stores/userStore";
 
 export const useMockStore = defineStore("mock", () => {
+  const daysBetween = (from: string, to: string) => {
+    const fromDate = dayjs(new Date(from)).startOf("day");
+    const toDate = dayjs(new Date(to)).endOf("day");
+    dayjs.extend(duration);
+    const span = dayjs.duration(toDate.diff(fromDate)).asDays();
+    const days = [];
+    for (let i = 0; i <= span; i++) {
+      days.push(dayjs(fromDate).add(i, "day").startOf("day").toISOString());
+    }
+    return days;
+  };
+
+  const getTotalUserData = () => {
+    return Array.from({ length: 30 }, () => Math.floor(Math.random() * 10));
+  };
+
+  const getTotalUserLabels = () => {
+    return daysBetween("01-Jan-2024", "30-Jan-2024");
+  };
+
   const getTotalUsers = () => {
     const chartData: ChartData<"line"> = {
-      labels: [...Array(40).keys()],
+      labels: getTotalUserLabels(),
       datasets: [
         {
           label: "My First Dataset",
-          data: Array.from({ length: 40 }, () =>
-            Math.floor(Math.random() * 10)
-          ),
+          data: getTotalUserData(),
           borderColor: "rgb(255, 255, 255, 0.8)",
           backgroundColor: "rgba(255, 255, 255, 0.8)",
           fill: false,
@@ -29,7 +49,7 @@ export const useMockStore = defineStore("mock", () => {
         },
       },
       scales: {
-        x: { display: false },
+        x: { display: false, type: "time" },
         y: { display: false },
       },
     };
@@ -39,13 +59,11 @@ export const useMockStore = defineStore("mock", () => {
 
   const getTotalUsersDetail = () => {
     const chartData: ChartData<"line"> = {
-      labels: [...Array(40).keys()],
+      labels: getTotalUserLabels(),
       datasets: [
         {
           label: "Random Example Data",
-          data: Array.from({ length: 40 }, () =>
-            Math.floor(Math.random() * 10)
-          ),
+          data: getTotalUserData(),
           borderColor: "rgb(0, 0, 0, 0.8)",
           backgroundColor: "rgba(0, 0, 0, 0.8)",
           fill: false,
@@ -79,6 +97,10 @@ export const useMockStore = defineStore("mock", () => {
             mode: "x",
           },
         },
+      },
+      scales: {
+        x: { type: "time" },
+        y: {},
       },
     };
 
