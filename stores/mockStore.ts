@@ -2,36 +2,34 @@ import type { ChartData, ChartOptions } from "chart.js";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { defineStore } from "pinia";
+import { useTheme } from "vuetify";
+import use from "~/server/api/use";
 import type { KPI } from "~/stores/userStore";
 
 export const useMockStore = defineStore("mock", () => {
-  const daysBetween = (from: string, to: string) => {
-    const fromDate = dayjs(new Date(from)).startOf("day");
-    const toDate = dayjs(new Date(to)).endOf("day");
-    dayjs.extend(duration);
-    const span = dayjs.duration(toDate.diff(fromDate)).asDays();
-    const days = [];
-    for (let i = 0; i <= span; i++) {
-      days.push(dayjs(fromDate).add(i, "day").startOf("day").toISOString());
+  const getKPICard = async (kpi: KPI) => {
+    let resp = undefined;
+    switch (kpi.id) {
+      case "1":
+        resp = await useFetch("/api/satisfaction");
+        break;
+      case "2":
+        resp = await useFetch("/api/timeSaved");
+        break;
+      case "4":
+        resp = await useFetch("/api/use");
+        break;
+      default:
+        resp = await useFetch("/api/timeSaved");
+        break;
     }
-    return days;
-  };
 
-  const getTotalUserData = () => {
-    return Array.from({ length: 30 }, () => Math.floor(Math.random() * 10));
-  };
-
-  const getTotalUserLabels = () => {
-    return daysBetween("01-Jan-2024", "30-Jan-2024");
-  };
-
-  const getTotalUsers = () => {
     const chartData: ChartData<"line"> = {
-      labels: getTotalUserLabels(),
+      labels: resp?.data.value?.label,
       datasets: [
         {
-          label: "My First Dataset",
-          data: getTotalUserData(),
+          label: kpi.title,
+          data: resp?.data.value ? resp?.data.value?.data : [],
           borderColor: "rgb(255, 255, 255, 0.8)",
           backgroundColor: "rgba(255, 255, 255, 0.8)",
           fill: false,
@@ -49,7 +47,7 @@ export const useMockStore = defineStore("mock", () => {
         },
       },
       scales: {
-        x: { display: false, type: "time" },
+        x: { display: false, type: kpi.id !== "4" ? "time" : undefined },
         y: { display: false },
       },
     };
@@ -57,15 +55,36 @@ export const useMockStore = defineStore("mock", () => {
     return { data: chartData, options: chartOptions };
   };
 
-  const getTotalUsersDetail = () => {
+  const getKPIDetail = async (kpi: KPI, darkTheme: boolean = true) => {
+    let resp = undefined;
+
+    switch (kpi.id) {
+      case "1":
+        resp = await useFetch("/api/satisfaction");
+        break;
+      case "2":
+        resp = await useFetch("/api/timeSaved");
+        break;
+      case "4":
+        resp = await useFetch("/api/use");
+        break;
+      default:
+        resp = await useFetch("/api/timeSaved");
+        break;
+    }
+
     const chartData: ChartData<"line"> = {
-      labels: getTotalUserLabels(),
+      labels: resp?.data.value?.label,
       datasets: [
         {
-          label: "Random Example Data",
-          data: getTotalUserData(),
-          borderColor: "rgb(0, 0, 0, 0.8)",
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          label: kpi.title,
+          data: resp?.data.value ? resp?.data.value?.data : [],
+          borderColor: darkTheme
+            ? "rgb(255, 255, 255, 0.8)"
+            : "rgb(0, 0, 0, 0.8)",
+          backgroundColor: darkTheme
+            ? "rgb(255, 255, 255, 0.8)"
+            : "rgb(0, 0, 0, 0.8)",
           fill: false,
           tension: 0.3,
         },
@@ -99,7 +118,7 @@ export const useMockStore = defineStore("mock", () => {
         },
       },
       scales: {
-        x: { type: "time" },
+        x: { type: kpi.id !== "4" ? "time" : undefined },
         y: {},
       },
     };
@@ -107,78 +126,58 @@ export const useMockStore = defineStore("mock", () => {
     return { data: chartData, options: chartOptions };
   };
 
-  const getTotalUserTrend = () => {
+  const getSatisfactionTrend = () => {
     return {
       percentage: "69%",
-      value: "26K",
+      value: "4.3",
       trend: "up",
     };
   };
-
-  const getKPI = (kpiId: string) => {
-    switch (kpiId) {
-      case "1":
-      case "2":
-      case "3":
-      case "4":
-        return getTotalUsers();
-      default:
-        return;
-    }
+  const getTimeSavedTrend = () => {
+    return {
+      percentage: "12%",
+      value: "12h",
+      trend: "up",
+    };
+  };
+  const getUseTrend = () => {
+    return {
+      percentage: "27%",
+      value: "25",
+      trend: "down",
+    };
+  };
+  const getCompletionTrend = () => {
+    return {
+      percentage: "5%",
+      value: "75",
+      trend: "up",
+    };
   };
 
   const getKPITrend = (kpiId: string) => {
     switch (kpiId) {
       case "1":
+        return getSatisfactionTrend();
       case "2":
+        return getTimeSavedTrend();
       case "3":
+        return getCompletionTrend();
       case "4":
-        return getTotalUserTrend();
+        return getUseTrend();
       default:
         return;
     }
   };
 
-  const getKPIDetails = (kpiId: string) => {
-    switch (kpiId) {
-      case "1":
-      case "2":
-      case "3":
-      case "4":
-        return getTotalUsersDetail();
-      default:
-        return;
-    }
+  const getKPIs = async () => {
+    const { data } = await useFetch("/api/kpis");
+    return data.value as KPI[];
   };
 
-  const getKPIs = (): KPI[] => {
-    return [
-      {
-        id: "1",
-        title: "Total Users",
-        color: "indigo-darken-4",
-        chartType: "line",
-      },
-      {
-        id: "2",
-        title: "Total Revenue",
-        color: "blue-darken-1",
-        chartType: "line",
-      },
-      {
-        id: "3",
-        title: "Total Users",
-        color: "orange-darken-1",
-        chartType: "bar",
-      },
-      {
-        id: "4",
-        title: "Total Users",
-        color: "red-darken-1",
-        chartType: "doughnut",
-      },
-    ] as KPI[];
+  const getTableData = async () => {
+    return await useFetch("/api/tableData");
   };
 
-  return { getKPI, getKPITrend, getKPIDetails, getKPIs };
+  return { getKPICard, getKPITrend, getKPIDetail, getKPIs, getTableData };
 });

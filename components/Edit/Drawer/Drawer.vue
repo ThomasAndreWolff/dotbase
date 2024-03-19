@@ -8,13 +8,17 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits(["update:modelValue"]);
+const kpis = ref<KPI[]>();
 
-const kpis = ref(useMockStore().getKPIs());
+onBeforeMount(async () => {
+  kpis.value = await useUserStore().fetchUserKPIs();
+});
+
 const { kpis: userKpis } = storeToRefs(useUserStore());
 
 const shownKPIs = computed(() => {
   const userKpiIds = userKpis.value.map((kpi) => kpi.id);
-  return kpis.value.filter(
+  return kpis.value?.filter(
     (kpi) =>
       !userKpiIds.includes(kpi.id) &&
       kpi.title.toLowerCase().includes(search.value.toLowerCase())

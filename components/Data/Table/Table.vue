@@ -19,7 +19,10 @@ const search = ref("");
 </script>
 
 <template>
-  <v-card :title="title">
+  <v-card>
+    <template v-slot:title>
+      <p class="text-4xl font-semibold">{{ title }}</p>
+    </template>
     <template v-slot:text>
       <v-text-field
         v-model="search"

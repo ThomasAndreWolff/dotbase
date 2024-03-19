@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
   edit: false,
 });
 
-const chart = ref(useMockStore().getKPI(props.id));
+const chart = ref(await useMockStore().getKPICard(props));
 const trend = ref(useMockStore().getKPITrend(props.id));
 
 const emits = defineEmits(["remove"]);

@@ -3,9 +3,11 @@ import { useUserStore, type KPI } from "@/stores/userStore";
 
 const selectedKPI = ref<KPI>();
 const edit = ref(false);
+const tableData = ref();
 
-onBeforeMount(() => {
-  useUserStore().fetchUserKPIs();
+onBeforeMount(async () => {
+  await useUserStore().fetchUserKPIs();
+  tableData.value = await useMockStore().getTableData();
 });
 
 const { kpis: userKpis } = storeToRefs(useUserStore());
@@ -41,14 +43,18 @@ const { kpis: userKpis } = storeToRefs(useUserStore());
       :edit="edit"
       @remove="(kpi) => useUserStore().removeKPI(kpi.id)"
     />
-    <v-row v-if="selectedKPI">
+    <v-row v-if="selectedKPI && !edit">
       <v-col>
         <detail-card :title="selectedKPI.title" :kpi="selectedKPI" />
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="tableData">
       <v-col>
-        <data-table title="Data Table " />
+        <data-table
+          title="Prozesse"
+          :items="tableData.data.items"
+          :headers="tableData.data.headers"
+        />
       </v-col>
     </v-row>
   </v-container>

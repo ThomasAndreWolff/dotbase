@@ -32,12 +32,12 @@ const props = withDefaults(defineProps<Props>(), {
   }),
 });
 
-const lineChart = ref();
+const doughnutChart = ref();
 
 watch(
-  props.chartOptions,
+  props,
   (value) => {
-    if (lineChart.value.chart) lineChart.value.chart.update();
+    if (doughnutChart.value.chart) doughnutChart.value.chart.update();
   },
   { deep: true }
 );
@@ -53,7 +53,7 @@ watch(
       :plugins="plugins"
       :css-classes="cssClasses"
       :styles="styles"
-      ref="pieChart"
+      ref="doughnutChart"
     />
   </div>
 </template>

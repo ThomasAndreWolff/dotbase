@@ -39,12 +39,12 @@ const props = withDefaults(defineProps<Props>(), {
   }),
 });
 
-const lineChart = ref();
+const barChart = ref();
 
 watch(
-  props.chartOptions,
+  props,
   (value) => {
-    if (lineChart.value.chart) lineChart.value.chart.update();
+    if (barChart.value.chart) barChart.value.chart.update();
   },
   { deep: true }
 );
@@ -60,7 +60,7 @@ watch(
       :plugins="plugins"
       :css-classes="cssClasses"
       :styles="styles"
-      ref="lineChart"
+      ref="barChart"
     />
   </div>
 </template>

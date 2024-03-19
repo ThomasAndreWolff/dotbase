@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import type { Chart } from "chart.js";
+import { computedAsync } from "@vueuse/core";
+import { useTheme } from "vuetify";
 
 interface Props {
   title: string;
   kpi: KPI;
 }
 
+const isDarkTheme = useTheme().global.current.value.dark;
+
 const props = withDefaults(defineProps<Props>(), {});
-const chart = ref(useMockStore().getKPIDetails(props.kpi.id));
+const chart = await computedAsync(
+  async () => await useMockStore().getKPIDetail(props.kpi, isDarkTheme)
+);
 const lineChart = ref();
 </script>
 

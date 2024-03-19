@@ -61,7 +61,7 @@ const props = withDefaults(defineProps<Props>(), {
 const lineChart = ref();
 
 watch(
-  props.chartOptions,
+  props,
   (value) => {
     if (lineChart.value.chart) lineChart.value.chart.update();
   },
