@@ -1,9 +1,5 @@
 import type { ChartData, ChartOptions } from "chart.js";
-import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
 import { defineStore } from "pinia";
-import { useTheme } from "vuetify";
-import use from "~/server/api/use";
 import type { KPI } from "~/stores/userStore";
 
 export const useMockStore = defineStore("mock", () => {

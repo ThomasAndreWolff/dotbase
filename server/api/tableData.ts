@@ -1,5 +1,3 @@
-import daysBetween from "~/utils/getDaysBetween";
-
 export default defineEventHandler((event) => {
   return { headers: getTableHeaders(), items: getTableItems() };
 });

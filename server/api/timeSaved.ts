@@ -5,7 +5,7 @@ export default defineEventHandler((event) => {
 });
 
 const getRevenueLabels = () => {
-  return daysBetween("01-Jan-2024", "30-Jan-2024");
+  return daysBetween("01-Jan-2024", 30);
 };
 
 const getRevenueData = () => {
